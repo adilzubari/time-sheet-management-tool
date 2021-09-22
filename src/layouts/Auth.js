@@ -7,7 +7,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
 // core components
-import AuthNavbar from "components/Navbars/AuthNavbar.js";
+// import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthHeader from "components/Headers/AuthHeader.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
@@ -53,7 +53,7 @@ const Auth = () => {
   return (
     <>
       <div className="main-content" ref={mainContent}>
-        <AuthNavbar />
+        {/* <AuthNavbar /> */}
         <AuthHeader />
         {/* Page content */}
         <Container

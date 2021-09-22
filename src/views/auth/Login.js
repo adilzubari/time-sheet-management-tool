@@ -6,7 +6,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
+// import CardHeader from "@material-ui/core/CardHeader";
 import Checkbox from "@material-ui/core/Checkbox";
 import FilledInput from "@material-ui/core/FilledInput";
 import FormControl from "@material-ui/core/FormControl";
@@ -29,70 +29,6 @@ function Login() {
     <>
       <Grid item xs={12} lg={5} md={7}>
         <Card classes={{ root: classes.cardRoot }}>
-          <CardHeader
-            className={classes.cardHeader}
-            title={
-              <Box
-                fontSize="80%"
-                fontWeight="400"
-                component="small"
-                color={theme.palette.gray[600]}
-              >
-                Sign in with
-              </Box>
-            }
-            titleTypographyProps={{
-              component: Box,
-              textAlign: "center",
-              marginBottom: "1rem!important",
-              marginTop: ".5rem!important",
-              fontSize: "1rem!important",
-            }}
-            subheader={
-              <Box textAlign="center">
-                <Box
-                  component={Button}
-                  variant="contained"
-                  marginRight=".5rem!important"
-                  classes={{ root: classes.buttonRoot }}
-                >
-                  <Box component="span" marginRight="4px">
-                    <Box
-                      alt="..."
-                      component="img"
-                      width="20px"
-                      className={classes.buttonImg}
-                      src={
-                        require("assets/img/icons/common/github.svg").default
-                      }
-                    ></Box>
-                  </Box>
-                  <Box component="span" marginLeft=".75rem">
-                    Github
-                  </Box>
-                </Box>
-                <Button
-                  variant="contained"
-                  classes={{ root: classes.buttonRoot }}
-                >
-                  <Box component="span" marginRight="4px">
-                    <Box
-                      alt="..."
-                      component="img"
-                      width="20px"
-                      className={classes.buttonImg}
-                      src={
-                        require("assets/img/icons/common/google.svg").default
-                      }
-                    ></Box>
-                  </Box>
-                  <Box component="span" marginLeft=".75rem">
-                    Google
-                  </Box>
-                </Button>
-              </Box>
-            }
-          ></CardHeader>
           <CardContent classes={{ root: classes.cardContent }}>
             <Box
               color={theme.palette.gray[600]}
@@ -102,7 +38,7 @@ function Login() {
               fontSize="1rem"
             >
               <Box fontSize="80%" fontWeight="400" component="small">
-                Or sign in with credentials
+                Please enter your credentials
               </Box>
             </Box>
             <FormControl
@@ -156,7 +92,7 @@ function Login() {
             </Box>
           </CardContent>
         </Card>
-        <Grid container component={Box} marginTop="1rem">
+        {/* <Grid container component={Box} marginTop="1rem">
           <Grid item xs={6} component={Box} textAlign="left">
             <a
               href="#admui"
@@ -175,7 +111,7 @@ function Login() {
               Create new account
             </a>
           </Grid>
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );
