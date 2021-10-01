@@ -14,10 +14,14 @@ import AuthFooter from "components/Footers/AuthFooter.js";
 import routes from "routes.js";
 
 import componentStyles from "assets/theme/layouts/auth.js";
+// Context API
+import { useStateValue } from "../StateProvider";
 
 const useStyles = makeStyles(componentStyles);
 
 const Auth = () => {
+  const [{ Auth, UserProfile }, dispatch] = useStateValue();
+
   const classes = useStyles();
   const mainContent = React.useRef(null);
   const location = useLocation();
@@ -50,6 +54,25 @@ const Auth = () => {
     });
   };
 
+  let redirect_url = "/auth/login";
+
+  // Authentication
+  // if (Auth) {
+  //   switch (UserProfile.Role) {
+  //     case "admin":
+  //       redirect_url = window.location.origin + "/#/admin/users";
+  //       break;
+  //     case "employee":
+  //       redirect_url = window.location.origin + "/#/employee/index";
+  //       break;
+  //     case "viewer":
+  //       redirect_url = window.location.origin + "/#/viewer/index";
+  //       break;
+  //     default:
+  //       redirect_url = window.location.origin + "/auth/login";
+  //       break;
+  //   }
+  // } else
   return (
     <>
       <div className="main-content" ref={mainContent}>
@@ -67,7 +90,7 @@ const Auth = () => {
           <Box component={Grid} container justifyContent="center">
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="*" to="/auth/login" />
+              <Redirect from="*" to={redirect_url} />
             </Switch>
           </Box>
         </Container>

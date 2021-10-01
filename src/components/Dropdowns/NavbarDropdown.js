@@ -19,11 +19,16 @@ import Settings from "@material-ui/icons/Settings";
 // core components
 import componentStyles from "assets/theme/components/navbar-dropdown.js";
 
+// Context API
+import { useStateValue } from "../../StateProvider";
+
 const useStyles = makeStyles(componentStyles);
 
 export default function NavbarDropdown() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const [{ Auth, UserProfile }, dispatch] = useStateValue();
 
   const isMenuOpen = Boolean(anchorEl);
 
@@ -143,12 +148,22 @@ export default function NavbarDropdown() {
       >
         <Avatar
           alt="..."
-          src={require("assets/img/theme/team-4-800x800.jpg").default}
+          // icon="folder"
+          // src={require("assets/img/theme/team-4-800x800.jpg").default}
+          src={
+            {
+              uri: "https://c.tenor.com/XdFv1bbfOdEAAAAM/user-icons.gif",
+            }.default
+          }
+          // style={{
+          //   width: 30,
+          //   height: 30,
+          // }}
           classes={{
             root: classes.avatarRoot,
           }}
         />
-        <Hidden smDown>Jessica Jones</Hidden>
+        <Hidden smDown>{UserProfile.Name}</Hidden>
       </Button>
       {renderMenu}
     </>

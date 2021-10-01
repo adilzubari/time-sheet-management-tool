@@ -17,19 +17,16 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
 
-import routes from "routes.js";
+import routes from "report_viewer_routes.js";
 
 import componentStyles from "assets/theme/layouts/admin.js";
 // Context API
 import { useStateValue } from "../StateProvider";
-// import reducer, { initialState } from "./reducer";
 
 const useStyles = makeStyles(componentStyles);
 
-const Admin = () => {
+const ReportViewer = () => {
   const [{ Auth, UserProfile }, dispatch] = useStateValue();
-
-  console.log(UserProfile);
 
   const classes = useStyles();
   const location = useLocation();
@@ -42,7 +39,7 @@ const Admin = () => {
 
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
+      if (prop.layout === "/viewer") {
         return (
           <Route
             path={prop.layout + prop.path}
@@ -66,7 +63,7 @@ const Admin = () => {
   };
 
   // Authentication
-  if (!Auth || UserProfile.Role != "admin")
+  if (!Auth || UserProfile.Role != "viewer")
     window.location.href = window.location.origin;
   else
     return (
@@ -75,7 +72,7 @@ const Admin = () => {
           <Sidebar
             routes={routes}
             logo={{
-              innerLink: "/admin/index",
+              innerLink: "/viewer/index",
               imgSrc: require("../assets/img/brand/argon-react.png").default,
               imgAlt: "...",
             }}
@@ -106,7 +103,7 @@ const Admin = () => {
             <AdminNavbar brandText={getBrandText(location.pathname)} />
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="*" to="/admin/users" />
+              <Redirect from="*" to="/viewer/reports" />
             </Switch>
             <Container
               maxWidth={false}
@@ -121,4 +118,4 @@ const Admin = () => {
     );
 };
 
-export default Admin;
+export default ReportViewer;

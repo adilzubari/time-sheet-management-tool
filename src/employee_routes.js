@@ -17,21 +17,21 @@ import Login from "views/auth/Login.js";
 // import Person from "@material-ui/icons/Person";
 import Tv from "@material-ui/icons/Tv";
 import VpnKey from "@material-ui/icons/VpnKey";
-import PeopleAltTwoTone from "@material-ui/icons/PeopleAltTwoTone";
+// import PeopleAltTwoTone from "@material-ui/icons/PeopleAltTwoTone";
 import CardMembershipTwoTone from "@material-ui/icons/CardMembershipTwoTone";
 import DashboardTwoTone from "@material-ui/icons/DashboardTwoTone";
-import FileCopyTwoTone from "@material-ui/icons/FileCopyTwoTone";
+// import FileCopyTwoTone from "@material-ui/icons/FileCopyTwoTone";
 import AccountCircleTwoTone from "@material-ui/icons/AccountCircleTwoTone";
 
 // Imports By Lughut
-// import Dashboard from "pages/admin/Dashboard.js";
-import Users from "pages/admin/Users.js";
-import Levels from "pages/admin/Levels.js";
-import WBSCodes from "pages/admin/WBSCodes.js";
-import AddNewUser from "pages/admin/AddNewUser.js";
+// import Users from "pages/admin/Users.js";
+import TimeSheet from "pages/employee/TimeSheet.js";
+import Levels from "pages/employee/Levels.js";
+import WBSCodes from "pages/employee/WBSCodes.js";
+// import AddNewUser from "pages/admin/AddNewUser.js";
 import EditProfile from "pages/admin/EditProfile.js";
-import AddNewLevel from "pages/admin/AddNewLevel.js";
-import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
+// import AddNewLevel from "pages/admin/AddNewLevel.js";
+// import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 
 // var routes = [
 //   {
@@ -46,7 +46,7 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 //     icon: Tv,
 //     iconColor: "Primary",
 //     component: Dashboard,
-//     layout: "/admin",
+//     layout: "/employee",
 //   },
 //   {
 //     path: "/icons",
@@ -54,7 +54,7 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 //     icon: Grain,
 //     iconColor: "Primary",
 //     component: Icons,
-//     layout: "/admin",
+//     layout: "/employee",
 //   },
 //   {
 //     path: "/maps",
@@ -62,7 +62,7 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 //     icon: LocationOn,
 //     iconColor: "Warning",
 //     component: Maps,
-//     layout: "/admin",
+//     layout: "/employee",
 //   },
 //   {
 //     path: "/user-profile",
@@ -70,7 +70,7 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 //     icon: Person,
 //     iconColor: "WarningLight",
 //     component: Profile,
-//     layout: "/admin",
+//     layout: "/employee",
 //   },
 //   {
 //     path: "/tables",
@@ -78,7 +78,7 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 //     icon: FormatListBulleted,
 //     iconColor: "Error",
 //     component: Tables,
-//     layout: "/admin",
+//     layout: "/employee",
 //   },
 //   {
 //     path: "/login",
@@ -120,13 +120,21 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 // ];
 
 var routes = [
+  // {
+  //   path: "/users",
+  //   name: "Users",
+  //   icon: PeopleAltTwoTone,
+  //   iconColor: "Primary",
+  //   component: Users,
+  //   layout: "/employee",
+  // },
   {
-    path: "/users",
-    name: "Users",
-    icon: PeopleAltTwoTone,
-    iconColor: "Primary",
-    component: Users,
-    layout: "/admin",
+    path: "/timesheet",
+    name: "Time Sheet",
+    icon: CardMembershipTwoTone,
+    iconColor: "Info",
+    component: TimeSheet,
+    layout: "/employee",
   },
   {
     path: "/levels",
@@ -134,7 +142,7 @@ var routes = [
     icon: CardMembershipTwoTone,
     iconColor: "Warning",
     component: Levels,
-    layout: "/admin",
+    layout: "/employee",
   },
   {
     path: "/wbs_codes",
@@ -142,15 +150,7 @@ var routes = [
     icon: DashboardTwoTone,
     iconColor: "WarningLight",
     component: WBSCodes,
-    layout: "/admin",
-  },
-  {
-    path: "/reports",
-    name: "Reports",
-    icon: FileCopyTwoTone,
-    iconColor: "Error",
-    component: WBSCodes,
-    layout: "/admin",
+    layout: "/employee",
   },
   {
     path: "/master_data",
@@ -158,7 +158,7 @@ var routes = [
     icon: Tv,
     iconColor: "Info",
     component: WBSCodes,
-    layout: "/admin",
+    layout: "/employee",
   },
   {
     divider: true,
@@ -166,38 +166,38 @@ var routes = [
   {
     title: "Others",
   },
-  {
-    path: "/user/add",
-    name: "Add New User",
-    icon: PeopleAltTwoTone,
-    // iconColor: "Primary",
-    component: AddNewUser,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/user/add",
+  //   name: "Add New User",
+  //   icon: PeopleAltTwoTone,
+  //   // iconColor: "Primary",
+  //   component: AddNewUser,
+  //   layout: "/employee",
+  // },
   {
     path: "/user/edit",
     name: "Edit Profile",
     icon: AccountCircleTwoTone,
     // iconColor: "Primary",
     component: EditProfile,
-    layout: "/admin",
+    layout: "/employee",
   },
-  {
-    path: "/level/add",
-    name: "Add New Level",
-    icon: CardMembershipTwoTone,
-    // iconColor: "Primary",
-    component: AddNewLevel,
-    layout: "/admin",
-  },
-  {
-    path: "/wbs/add",
-    name: "Add New WBS Code",
-    icon: FileCopyTwoTone,
-    // iconColor: "Primary",
-    component: AddNewWBSCode,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/level/add",
+  //   name: "Add New Level",
+  //   icon: CardMembershipTwoTone,
+  //   // iconColor: "Primary",
+  //   component: AddNewLevel,
+  //   layout: "/employee",
+  // },
+  // {
+  //   path: "/wbs/add",
+  //   name: "Add New WBS Code",
+  //   icon: FileCopyTwoTone,
+  //   // iconColor: "Primary",
+  //   component: AddNewWBSCode,
+  //   layout: "/employee",
+  // },
   {
     path: "/",
     name: "Logout",
