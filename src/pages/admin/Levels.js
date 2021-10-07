@@ -82,6 +82,8 @@ const BootstrapDialogTitle = (props) => {
 
 const useStyles = makeStyles(componentStyles);
 
+let SelectedLevelId = null;
+
 function Dashboard() {
   const classes = useStyles();
   const theme = useTheme();
@@ -91,10 +93,26 @@ function Dashboard() {
   const [ConfirmationModalVisibility, setConfirmationModalVisibility] =
     React.useState(false);
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const handleClickOpen = () => {
+  const handleClickOpen = (id = null) => {
+    // console.log(id);
+    SelectedLevelId = id;
     setConfirmationModalVisibility(true);
   };
-  const handleClose = () => {
+  const handleClose = async (flag = false) => {
+    // console.log(SelectedLevelId);
+    if (flag) {
+      try {
+        console.log("Initiating Level Delete Request ...");
+        const Response = await axios.post("/level/delete", {
+          _id: SelectedLevelId,
+        });
+        console.log("Request successfull!");
+        // window.location.href = window.location.origin + "/#/admin/levels";
+        window.location.reload();
+      } catch (e) {
+        console.log("Request Failed!", e);
+      }
+    }
     setConfirmationModalVisibility(false);
   };
 
@@ -122,6 +140,7 @@ function Dashboard() {
       width: 200,
       disableClickEventBubbling: true,
       renderCell: (params) => {
+        // console.log(params.formattedValue);
         return (
           <div>
             <Button
@@ -135,7 +154,7 @@ function Dashboard() {
             <Button
               variant="contained"
               style={{ padding: 7 }}
-              onClick={() => setConfirmationModalVisibility(true)}
+              onClick={() => handleClickOpen(params.formattedValue)}
             >
               <DeleteIcon />
             </Button>
@@ -143,7 +162,7 @@ function Dashboard() {
         );
       },
     },
-    { field: "id", headerName: "Sr", width: 50 },
+    // { field: "id", headerName: "Sr", width: 50 },
     {
       field: "LevelName",
       headerName: "Level Name",
@@ -203,7 +222,7 @@ function Dashboard() {
         console.log("Requesting Levels List ...");
         let Response = await axios.get("/get/levels");
         Response.data = Response.data.map((list) => {
-          return { ...list, id: list._id };
+          return { ...list, id: list._id, actions: list._id };
         });
         console.log("Response Recieved", Response.data);
         setrows(Response.data);
@@ -282,7 +301,7 @@ function Dashboard() {
         <Dialog
           fullScreen={fullScreen}
           open={ConfirmationModalVisibility}
-          onClose={handleClose}
+          onClose={() => handleClose(false)}
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
@@ -297,10 +316,10 @@ function Dashboard() {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleClose}>
+            <Button autoFocus onClick={() => handleClose(false)}>
               No, Don't Delete!
             </Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button onClick={() => handleClose(true)} autoFocus>
               Confrim
             </Button>
           </DialogActions>
@@ -321,7 +340,7 @@ function Dashboard() {
               <CardHeader
                 title={
                   <Box component="span" color={theme.palette.gray[600]}>
-                    <a href={window.location.origin + "/#/admin/wbs_codes"}>
+                    <a href={window.location.origin + "/#/admin/level/add"}>
                       + Add New Level
                     </a>
                   </Box>

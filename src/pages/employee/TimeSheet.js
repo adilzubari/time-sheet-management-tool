@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import React, { useEffect, useState } from "react";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
@@ -25,13 +25,21 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { styled } from "@mui/material/styles";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 
 import { DataGrid } from "@mui/x-data-grid";
-// import axios from "axios.js";
+import axios from "axios.js";
+import {
+  endOfWeek,
+  startOfWeek,
+  isWithinInterval,
+  eachDayOfInterval,
+} from "date-fns";
+import { useStateValue } from "../../StateProvider";
 
 // core components
 import Header from "components/Headers/Header.js";
+import EditIcon from "@material-ui/icons/Edit";
 
 import {
   chartOptions,
@@ -83,7 +91,16 @@ const BootstrapDialogTitle = (props) => {
 
 const useStyles = makeStyles(componentStyles);
 
+let Today = null;
+let FirstDayOfTheWeek = null;
+let LastDayOfTheWeek = null;
+let DaysInTheWeek = null;
+let SelectedWorkflowId = null;
+
+let ProgressDumper = null;
+
 function Dashboard() {
+  const [{ UserProfile }, dispatch] = useStateValue();
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
@@ -99,11 +116,67 @@ function Dashboard() {
     setConfirmationModalVisibility(false);
   };
 
-  const [EditModalVisibility, setEditModalVisibility] = React.useState(false);
-  const handleEditOpen = () => {
-    setEditModalVisibility(true);
+  const RespectedCorresspondedExists = (index) => {
+    try {
+      return Object.entries(
+        ProgressDumper.filter(
+          (item) => item.Workflow_id == SelectedWorkflowId
+        )[0].Progress
+      ).filter((item) => item[0] == DaysInTheWeek[index]).length == 1
+        ? true
+        : false;
+    } catch (e) {
+      return false;
+    }
   };
-  const handleEditClose = () => {
+
+  const [EditModalVisibility, setEditModalVisibility] = React.useState(false);
+  const handleEditOpen = (id) => {
+    // console.log("its clicked");
+    SelectedWorkflowId = id;
+    setEditModalVisibility(EditModalVisibility ? false : true);
+  };
+  const handleEditClose = async (flag = false) => {
+    if (flag) {
+      Today = new Date();
+      FirstDayOfTheWeek = startOfWeek(Today, { weekStartsOn: 1 });
+      LastDayOfTheWeek = endOfWeek(Today, { weekStartsOn: 1 });
+      DaysInTheWeek = eachDayOfInterval({
+        start: FirstDayOfTheWeek,
+        end: LastDayOfTheWeek,
+      });
+      let req_obj = {};
+      Object.keys(DaysInTheWeek).forEach((key) => {
+        // console.log(">>>>>>>>>>>", key);
+        if (RespectedCorresspondedExists(key)) {
+          req_obj["Progress." + DaysInTheWeek[key]] = document.getElementById(
+            DaysInTheWeek[key]
+          ).value;
+        }
+      });
+      req_obj = {
+        Workflow_id: SelectedWorkflowId,
+        Progress: {
+          ...req_obj,
+        },
+      };
+      console.log("Object Formulated for Timesheet update", req_obj);
+      // return;
+
+      try {
+        console.log("Request to update Progress Initiating ... ");
+        const Response = await axios.post("/progress/update", req_obj);
+        console.log("Response Recieved", Response.data);
+        console.log("Request successfull");
+        window.location.href = window.location.origin + "/#/employee/user/edit";
+        setTimeout(() => {
+          window.location.href =
+            window.location.origin + "/#/employee/timesheet";
+        }, 5);
+      } catch (e) {
+        console.log("Request Failed!", e);
+      }
+    }
     setEditModalVisibility(false);
   };
 
@@ -116,8 +189,14 @@ function Dashboard() {
     setChartExample1Data("data" + index);
   };
 
-  const columns = [
+  const [columns, setcolumns] = useState([
     // { field: "id", headerName: "Sr", width: 50 },
+    // {
+    //   field: "ProjectName",
+    //   headerName: "Projects",
+    //   width: 250,
+    //   editable: false,
+    // },
     {
       field: "ProjectName",
       headerName: "Projects",
@@ -126,43 +205,43 @@ function Dashboard() {
     },
     {
       field: "mon",
-      headerName: "Mon, Feb 11",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
     {
       field: "tue",
-      headerName: "Tue, Feb 12",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
     {
       field: "wed",
-      headerName: "Wed, Feb 13",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
     {
       field: "thu",
-      headerName: "Thu, Feb 14",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
     {
       field: "fri",
-      headerName: "Fri, Feb 15",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
     {
       field: "sat",
-      headerName: "Sat, Feb 16",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
     {
       field: "sun",
-      headerName: "Sun, Feb 17",
+      headerName: "MMM DD, YYYY",
       width: 110,
       editable: false,
     },
@@ -172,151 +251,317 @@ function Dashboard() {
       width: 180,
       editable: false,
     },
-  ];
-
-  const [rows, setrows] = useState([
-    {
-      id: 1,
-      ProjectName: " • Vacation",
-      mon: "8.00",
-      tue: "0.00",
-      wed: "0.00",
-      thu: "0.00",
-      fri: "0.00",
-      sat: "0.00",
-      sun: "0.00",
-      Total: "8.00",
-    },
-    {
-      id: 2,
-      ProjectName: " • Project X",
-      mon: "0.00",
-      tue: "4.00",
-      wed: "4.00",
-      thu: "0.00",
-      fri: "0.00",
-      sat: "0.00",
-      sun: "0.00",
-      Total: "8.00",
-    },
-    {
-      id: 3,
-      ProjectName: " • Lead app",
-      mon: "0.00",
-      tue: "3.00",
-      wed: "0.00",
-      thu: "2.00",
-      fri: "2.00",
-      sat: "0.00",
-      sun: "0.00",
-      Total: "7.00",
-    },
-    {
-      id: 4,
-      ProjectName: " • Office",
-      mon: "0.00",
-      tue: "0.00",
-      wed: "2.00",
-      thu: "6.00",
-      fri: "0.00",
-      sat: "0.00",
-      sun: "0.00",
-      Total: "8.00",
-    },
-    {
-      id: 5,
-      ProjectName: " • Break",
-      mon: "0.00",
-      tue: "1.00",
-      wed: "1.00",
-      thu: "2.00",
-      fri: "2.00",
-      sat: "0.00",
-      sun: "0.00",
-      Total: "6.00",
-    },
   ]);
 
-  //   useEffect(() => {
-  //     (async () => {
-  //       try {
-  //         console.log("Requesting Levels List ...");
-  //         let Response = await axios.get("/get/levels");
-  //         Response.data = Response.data.map((list) => {
-  //           return { ...list, id: list._id };
-  //         });
-  //         console.log("Response Recieved", Response.data);
-  //         setrows(Response.data);
-  //         console.log("Request successfull!");
-  //       } catch (e) {
-  //         console.log("Request, Failed", e);
-  //       }
-  //     })();
-  //   }, []);
+  const [rows, setrows] = useState([
+    // {
+    //   id: 1,
+    //   ProjectName: " • Vacation",
+    //   mon: "8.00",
+    //   tue: "0.00",
+    //   wed: "0.00",
+    //   thu: "0.00",
+    //   fri: "0.00",
+    //   sat: "0.00",
+    //   sun: "0.00",
+    //   Total: "8.00",
+    // },
+  ]);
+
+  const getFormattedDate = (date) => {
+    date = new Date(date).toDateString().split(" ");
+    date.pop();
+    date = date.join(" ");
+    // console.log(date);
+    return date;
+  };
+
+  useEffect(() => {
+    (async () => {
+      console.log("Days in the week =>", DaysInTheWeek);
+      Today = new Date();
+      FirstDayOfTheWeek = startOfWeek(Today, { weekStartsOn: 1 });
+      LastDayOfTheWeek = endOfWeek(Today, { weekStartsOn: 1 });
+      DaysInTheWeek = eachDayOfInterval({
+        start: FirstDayOfTheWeek,
+        end: LastDayOfTheWeek,
+      });
+      setcolumns([
+        {
+          field: "actions",
+          headerName: "",
+          width: 80,
+          editable: false,
+          disableClickEventBubbling: true,
+          renderCell: (params) => {
+            // console.log("params", params);
+            if (params.formattedValue === undefined) return;
+            if (params.formattedValue.show) {
+              return (
+                <div>
+                  <Button
+                    variant="contained"
+                    style={{ padding: 7 }}
+                    onClick={() =>
+                      handleEditOpen(params.formattedValue.Workflow_id)
+                    }
+                    // onClick={() => SelectionForEdit(params.formattedValue)}
+                  >
+                    <EditIcon />
+                  </Button>
+                </div>
+              );
+            } else {
+              return <p></p>;
+            }
+          },
+        },
+        {
+          field: "ProjectName",
+          headerName: "Projects",
+          width: 250,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[0],
+          headerName: getFormattedDate(DaysInTheWeek[0]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[1],
+          headerName: getFormattedDate(DaysInTheWeek[1]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[2],
+          headerName: getFormattedDate(DaysInTheWeek[2]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[3],
+          headerName: getFormattedDate(DaysInTheWeek[3]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[4],
+          headerName: getFormattedDate(DaysInTheWeek[4]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[5],
+          headerName: getFormattedDate(DaysInTheWeek[5]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: DaysInTheWeek[6],
+          headerName: getFormattedDate(DaysInTheWeek[6]),
+          width: 110,
+          editable: false,
+        },
+        {
+          field: "Total",
+          headerName: "Total",
+          width: 180,
+          editable: false,
+        },
+      ]);
+      // console.log(DaysInTheWeek);
+      try {
+        console.log("Requesting Progress ...");
+        let Progress = await axios.get("/get/progress");
+        ProgressDumper = Progress.data;
+        console.log("Progress successfully recieved!");
+
+        console.log("Requesting Projects ...");
+        let Projects = await axios.get("/get/projects");
+        console.log("Projects successfully recieved!");
+
+        console.log("Requesting Workflow ...");
+        let Response = await axios.post("/get/workflow", {
+          Employee_id: UserProfile._id,
+        });
+        console.log("Response Recieved", Response.data);
+        Response.data = Response.data
+          .filter((item) =>
+            isWithinInterval(new Date(Today), {
+              start: new Date(item.Date_A),
+              end: new Date(item.Date_B),
+            })
+          )
+          .map((item) => {
+            return {
+              ...item,
+              id: item._id,
+              actions: {
+                show: true,
+                Workflow_id: item._id,
+              },
+              ProjectName:
+                " • " +
+                Projects.data.filter((proj) => proj._id == item.Project_id)[0]
+                  .ProjectName,
+              ...Progress.data.filter((prog) => prog.Workflow_id == item._id)[0]
+                .Progress,
+              Total: 0,
+            };
+          });
+        let zz = {};
+        Object.keys(DaysInTheWeek).forEach((key) => {
+          zz[DaysInTheWeek[key]] = 0.0;
+        });
+        DaysInTheWeek = zz;
+        Response.data = [
+          ...Response.data,
+          {
+            actions: {
+              show: false,
+              Workflow_id: null,
+            },
+            id: "kjasdhaslkh",
+            ProjectName: "Total",
+            ...zz,
+          },
+        ];
+        console.log("Response Filtered", Response.data);
+        setrows(Response.data);
+        console.log("Request successfull!");
+      } catch (e) {
+        console.log("Request, Failed", e);
+      }
+    })();
+  }, []);
+
+  const GetValueOfRespectedInput = (index) => {
+    try {
+      return ProgressDumper.filter(
+        (item) => item.Workflow_id == SelectedWorkflowId
+      )[0].Progress[[DaysInTheWeek[index]]];
+    } catch (e) {
+      return 0;
+    }
+  };
 
   return (
     <>
       {/* Edit Modal */}
-      <div>
-        <BootstrapDialog
-          onClose={handleEditClose}
-          aria-labelledby="customized-dialog-title"
-          open={EditModalVisibility}
-        >
-          <BootstrapDialogTitle
-            id="customized-dialog-title"
-            onClose={handleEditClose}
+      {DaysInTheWeek != null && ProgressDumper != null && (
+        <div>
+          {(() => {
+            Today = new Date();
+            FirstDayOfTheWeek = startOfWeek(Today, { weekStartsOn: 1 });
+            LastDayOfTheWeek = endOfWeek(Today, { weekStartsOn: 1 });
+            DaysInTheWeek = eachDayOfInterval({
+              start: FirstDayOfTheWeek,
+              end: LastDayOfTheWeek,
+            });
+            try {
+              {
+                /* console.log("======>", GetValueOfRespectedInput(0)); */
+              }
+              {
+                /* RespectedCorresspondedExists(0);
+              RespectedCorresspondedExists(1);
+              RespectedCorresspondedExists(2);
+              RespectedCorresspondedExists(3);
+              RespectedCorresspondedExists(4);
+              RespectedCorresspondedExists(5);
+              RespectedCorresspondedExists(6); */
+              }
+            } catch (e) {
+              console.log("Failed", e);
+            }
+            console.log("Day in the week", DaysInTheWeek);
+          })()}
+          <BootstrapDialog
+            onClose={() => handleEditClose(false)}
+            aria-labelledby="customized-dialog-title"
+            open={EditModalVisibility}
           >
-            Edit Level
-          </BootstrapDialogTitle>
-          <DialogContent dividers>
-            <TextField
-              label="Level Name"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: 20 }}
-            />
-
-            <TextField
-              label="Level"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: 20 }}
-            />
-
-            <TextField
-              label="Type"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: 20 }}
-            />
-
-            <TextField
-              label="Designation"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: 20 }}
-            />
-
-            <TextField
-              label="OffShore Per Hr"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: 20 }}
-            />
-
-            <TextField
-              label="On Site Per Hr"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: 20 }}
-            />
-            <Typography gutterBottom>
-              These changes will be automatically made to all the users that are
-              assigned this level.
-            </Typography>
-          </DialogContent>
-          <DialogActions>
-            <Button autoFocus onClick={handleEditClose}>
-              Save changes
-            </Button>
-          </DialogActions>
-        </BootstrapDialog>
-      </div>
+            <BootstrapDialogTitle
+              id="customized-dialog-title"
+              onClose={() => handleEditClose(false)}
+            >
+              Edit Timesheet
+            </BootstrapDialogTitle>
+            <DialogContent dividers>
+              {RespectedCorresspondedExists(0) && (
+                <TextField
+                  id={DaysInTheWeek[0]}
+                  label={getFormattedDate(DaysInTheWeek[0])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(0)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+              {RespectedCorresspondedExists(1) && (
+                <TextField
+                  id={DaysInTheWeek[1]}
+                  label={getFormattedDate(DaysInTheWeek[1])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(1)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+              {RespectedCorresspondedExists(2) && (
+                <TextField
+                  id={DaysInTheWeek[2]}
+                  label={getFormattedDate(DaysInTheWeek[2])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(2)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+              {RespectedCorresspondedExists(3) && (
+                <TextField
+                  id={DaysInTheWeek[3]}
+                  label={getFormattedDate(DaysInTheWeek[3])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(3)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+              {RespectedCorresspondedExists(4) && (
+                <TextField
+                  id={DaysInTheWeek[4]}
+                  label={getFormattedDate(DaysInTheWeek[4])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(4)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+              {RespectedCorresspondedExists(5) && (
+                <TextField
+                  id={DaysInTheWeek[5]}
+                  label={getFormattedDate(DaysInTheWeek[5])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(5)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+              {RespectedCorresspondedExists(6) && (
+                <TextField
+                  id={DaysInTheWeek[6]}
+                  label={getFormattedDate(DaysInTheWeek[6])}
+                  variant="outlined"
+                  defaultValue={GetValueOfRespectedInput(6)}
+                  style={{ width: "100%", marginBottom: 20 }}
+                />
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button autoFocus onClick={() => handleEditClose(true)}>
+                Update Timesheet
+              </Button>
+            </DialogActions>
+          </BootstrapDialog>
+        </div>
+      )}
       {/* Confirmation Modal */}
       <div>
         <Dialog
@@ -361,12 +606,10 @@ function Dashboard() {
               <CardHeader
                 title={
                   <Box component="span" color={theme.palette.gray[600]}>
-                    <a href={window.location.origin + "/#/admin/wbs_codes"}>
-                      + Add New Level
-                    </a>
+                    Let the top tier know, the dedication that you are putting
                   </Box>
                 }
-                subheader="Levels"
+                subheader="TimeSheet"
                 classes={{ root: classes.cardHeaderRoot }}
                 titleTypographyProps={{
                   component: Box,

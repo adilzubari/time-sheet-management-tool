@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // javascipt plugin for creating charts
 import Chart from "chart.js";
 // react plugin used to create charts
@@ -22,6 +22,10 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 
+// import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 import axios from "axios.js";
 
 // core components
@@ -44,11 +48,26 @@ import {
   // OutlinedInput,
   TextField,
 } from "@material-ui/core";
+// import axios from "axios.js";
 
 const useStyles = makeStyles(componentStyles);
 
 function AddNewUser() {
-  console.log("AddNewUserMounted");
+  const [level, setlevel] = useState(null);
+
+  useEffect(() => {
+    console.log("Initiating useEffect ...");
+    (async () => {
+      if (level == null) {
+        console.log("Requesting levels ...");
+        const Response = await axios.get("/get/levels");
+        setlevel(Response.data);
+        console.log("levels recieved and saved!", Response.data);
+      }
+    })();
+  }, []);
+
+  // console.log("AddNewUserMounted");
   const classes = useStyles();
   const theme = useTheme();
   const [activeNav, setActiveNav] = React.useState(1);
@@ -58,6 +77,7 @@ function AddNewUser() {
   const [Email, setEmail] = useState("");
   const [Contact, setContact] = useState("");
   const [Password, setPassword] = useState("");
+  const [Level, setLevel] = useState("");
   const [Role, setRole] = useState("employee");
 
   const [Submit, setSubmit] = useState(false);
@@ -69,7 +89,8 @@ function AddNewUser() {
       Email,
       Contact,
       Password,
-      Role
+      Role,
+      Level
     );
     setSubmit(true);
     try {
@@ -80,6 +101,7 @@ function AddNewUser() {
         Contact,
         Password,
         Role,
+        Level,
       });
       console.log("Response", Response.data);
       console.log("Request Successfull!");
@@ -192,6 +214,42 @@ function AddNewUser() {
                       marginBottom: 20,
                     }}
                   />
+
+                  {/* <FormControl fullWidth> */}
+                  {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={Level}
+                    label="Level / Designation"
+                    variant={"outlined"}
+                    onChange={(e) => setLevel(e.target.value)}
+                    style={{
+                      borderColor: "white",
+                      backgroundColor: "white",
+                      color: "black",
+                      width: "100%",
+                      marginBottom: 20,
+                    }}
+                  >
+                    {level &&
+                      (() => {
+                        const code = [];
+                        for (let index = 0; index < level.length; index++) {
+                          code.push(
+                            <MenuItem value={level[index]._id}>
+                              {level[index].LevelName}
+                            </MenuItem>
+                          );
+                        }
+                        console.log("code", code);
+                        return code;
+                      })()}
+                    {/* <MenuItem value={"10"}>Ten</MenuItem>
+                    <MenuItem value={"20"}>Twenty</MenuItem>
+                    <MenuItem value={"30"}>Thirty</MenuItem> */}
+                  </Select>
+                  {/* </FormControl> */}
 
                   <FormControl component="fieldset">
                     <FormLabel component="legend">Role</FormLabel>

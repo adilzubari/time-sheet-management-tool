@@ -25,6 +25,7 @@ import AccountCircleTwoTone from "@material-ui/icons/AccountCircleTwoTone";
 
 // Imports By Lughut
 // import Dashboard from "pages/admin/Dashboard.js";
+import WorkFlow from "pages/admin/WorkFlow.js";
 import Users from "pages/admin/Users.js";
 import Levels from "pages/admin/Levels.js";
 import WBSCodes from "pages/admin/WBSCodes.js";
@@ -121,6 +122,14 @@ import AddNewWBSCode from "pages/admin/AddNewWBSCode.js";
 
 var routes = [
   {
+    path: "/workflow",
+    name: "Workflow",
+    icon: PeopleAltTwoTone,
+    iconColor: "Info",
+    component: WorkFlow,
+    layout: "/admin",
+  },
+  {
     path: "/users",
     name: "Users",
     icon: PeopleAltTwoTone,
@@ -138,7 +147,7 @@ var routes = [
   },
   {
     path: "/wbs_codes",
-    name: "WBS Codes",
+    name: "Projects",
     icon: DashboardTwoTone,
     iconColor: "WarningLight",
     component: WBSCodes,
@@ -192,7 +201,7 @@ var routes = [
   },
   {
     path: "/wbs/add",
-    name: "Add New WBS Code",
+    name: "Add New Project",
     icon: FileCopyTwoTone,
     // iconColor: "Primary",
     component: AddNewWBSCode,

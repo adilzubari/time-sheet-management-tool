@@ -122,7 +122,7 @@ function AddNewUser() {
               <CardContent>
                 <div>
                   <h1 style={{ color: "rgb(250,250,250)" }}>
-                    Create New WBS Code
+                    Create New Project
                   </h1>
                   <TextField
                     id="outlined-basic"
@@ -150,7 +150,7 @@ function AddNewUser() {
                 // width: 300,
               }}
             >
-              Create WBS Code
+              Create Project
             </Button>
           </Grid>
         </Grid>

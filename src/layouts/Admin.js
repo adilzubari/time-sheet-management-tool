@@ -106,7 +106,7 @@ const Admin = () => {
             <AdminNavbar brandText={getBrandText(location.pathname)} />
             <Switch>
               {getRoutes(routes)}
-              <Redirect from="*" to="/admin/users" />
+              <Redirect from="*" to="/admin/workflow" />
             </Switch>
             <Container
               maxWidth={false}

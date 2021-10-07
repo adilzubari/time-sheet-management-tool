@@ -81,6 +81,7 @@ const BootstrapDialogTitle = (props) => {
 };
 
 const useStyles = makeStyles(componentStyles);
+let SelectedProjectId = null;
 
 function Dashboard() {
   const classes = useStyles();
@@ -104,6 +105,39 @@ function Dashboard() {
   };
   const handleEditClose = () => {
     setEditModalVisibility(false);
+  };
+
+  const SelectionForEdit = (id) => {
+    SelectedProjectId = id;
+    setEditModalVisibility(true);
+  };
+  const CancelingSelectionForEdit = () => {
+    setEditModalVisibility(false);
+  };
+
+  const SelectionForDelete = (id) => {
+    SelectedProjectId = id;
+    setConfirmationModalVisibility(true);
+  };
+  const CancelingSelectionForDelete = async (DeleteFlag = false) => {
+    if (DeleteFlag) {
+      console.log("Initiating Delete Request ...");
+      await axios
+        .post("/wbs/delete", {
+          _id: SelectedProjectId,
+        })
+        .then(() => {
+          console.log("Success from database ...");
+          setrows(rows.filter((user) => user._id != SelectedProjectId));
+          SelectedProjectId = null;
+          console.log("Request Successfull");
+        })
+        .catch((e) => {
+          console.log("Failed from database ...");
+          console.log("Request Failed");
+        });
+    }
+    setConfirmationModalVisibility(false);
   };
 
   if (window.Chart) {
@@ -135,7 +169,7 @@ function Dashboard() {
             <Button
               variant="contained"
               style={{ padding: 7 }}
-              onClick={() => setConfirmationModalVisibility(true)}
+              onClick={() => SelectionForDelete(params.formattedValue)}
             >
               <DeleteIcon />
             </Button>
@@ -143,7 +177,7 @@ function Dashboard() {
         );
       },
     },
-    { field: "id", headerName: "WBS Code", width: 250 },
+    { field: "id", headerName: "Project ID", width: 250 },
     {
       field: "ProjectName",
       headerName: "Project Name",
@@ -165,7 +199,7 @@ function Dashboard() {
         console.log("Requesting WBS List ...");
         let Response = await axios.get("/get/wbs");
         Response.data = Response.data.map((list) => {
-          return { ...list, id: list._id };
+          return { ...list, id: list._id, actions: list._id };
         });
         console.log("Response Recieved", Response.data);
         setrows(Response.data);
@@ -248,21 +282,24 @@ function Dashboard() {
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
-            {"Confirm Deleting the Level?"}
+            {"Confirm Deleting the Project?"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              By Confirming, the level will be permanently deleted and you'll
+              By Confirming, the project will be permanently deleted and you'll
               not be able to restore it.
               <br />
-              Note: It may effect the users that are assigned the same level.
+              Note: It may effect other entities that it is associated with.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleClose}>
+            <Button
+              autoFocus
+              onClick={() => CancelingSelectionForDelete(false)}
+            >
               No, Don't Delete!
             </Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button onClick={() => CancelingSelectionForDelete(true)} autoFocus>
               Confrim
             </Button>
           </DialogActions>
@@ -283,12 +320,12 @@ function Dashboard() {
               <CardHeader
                 title={
                   <Box component="span" color={theme.palette.gray[600]}>
-                    <a href={window.location.origin + "/#/admin/wbs_codes"}>
-                      + Add New WBS Code
+                    <a href={window.location.origin + "/#/admin/wbs/add"}>
+                      + Add New Project
                     </a>
                   </Box>
                 }
-                subheader="Work Breakdown Structure Codes (WBS Codes)"
+                subheader="Projects"
                 classes={{ root: classes.cardHeaderRoot }}
                 titleTypographyProps={{
                   component: Box,

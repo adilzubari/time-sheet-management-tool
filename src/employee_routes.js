@@ -146,7 +146,7 @@ var routes = [
   },
   {
     path: "/wbs_codes",
-    name: "WBS Codes",
+    name: "Projects",
     icon: DashboardTwoTone,
     iconColor: "WarningLight",
     component: WBSCodes,
