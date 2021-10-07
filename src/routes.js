@@ -29,6 +29,7 @@ import WorkFlow from "pages/admin/WorkFlow.js";
 import Users from "pages/admin/Users.js";
 import Levels from "pages/admin/Levels.js";
 import WBSCodes from "pages/admin/WBSCodes.js";
+import Reports from "pages/admin/Reports.js";
 import AddNewUser from "pages/admin/AddNewUser.js";
 import EditProfile from "pages/admin/EditProfile.js";
 import AddNewLevel from "pages/admin/AddNewLevel.js";
@@ -155,10 +156,10 @@ var routes = [
   },
   {
     path: "/reports",
-    name: "Reports",
+    name: "Weekly Reports",
     icon: FileCopyTwoTone,
     iconColor: "Error",
-    component: WBSCodes,
+    component: Reports,
     layout: "/admin",
   },
   {
