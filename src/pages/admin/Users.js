@@ -69,6 +69,7 @@ let SelectedUserID = null,
   },
   Role = "",
   Level = "",
+  Site = "",
   level = null;
 
 function Dashboard() {
@@ -98,8 +99,10 @@ function Dashboard() {
   const FindUserAndSetForEdit = () => {
     rows.forEach((row) => {
       if (row._id == SelectedUserID) {
+        // console.log(row);
         Role = row.Role;
         Level = row.Level_id;
+        Site = Object.keys(row).includes("Site") ? row.Site : "onsite";
         DataToModified = row;
       }
     });
@@ -222,6 +225,12 @@ function Dashboard() {
       field: "Level",
       headerName: "Designation / Level",
       width: 220,
+      editable: false,
+    },
+    {
+      field: "Site",
+      headerName: "On Site / Off Shore",
+      width: 150,
       editable: false,
     },
     {
@@ -388,6 +397,24 @@ function Dashboard() {
                 // }
                 style={{ width: "100%", marginBottom: 20 }}
               />
+
+              <Select
+                id="SiteToEdit"
+                defaultValue={Site}
+                label="Level / Designation"
+                variant={"outlined"}
+                onChange={(e) => (Site = e.target.value)}
+                style={{
+                  borderColor: "white",
+                  backgroundColor: "white",
+                  color: "black",
+                  width: "100%",
+                  marginBottom: 20,
+                }}
+              >
+                <MenuItem value="onsite">On Site</MenuItem>
+                <MenuItem value="offshore">Offshore</MenuItem>
+              </Select>
 
               <Select
                 labelId="demo-simple-select-label"

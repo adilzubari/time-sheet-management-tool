@@ -27,7 +27,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@mui/material/Typography";
 
 import { DataGrid } from "@mui/x-data-grid";
-import axios from "axios.js";
 
 // core components
 import Header from "components/Headers/Header.js";
@@ -39,10 +38,11 @@ import {
   // chartExample2,
 } from "variables/charts.js";
 // import EditIcon from "@material-ui/icons/Edit";
-// import DeleteIcon from "@material-ui/icons/Delete";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
 import { TextField } from "@material-ui/core";
+import axios from "axios.js";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuDialogContent-root": {
@@ -81,6 +81,7 @@ const BootstrapDialogTitle = (props) => {
 };
 
 const useStyles = makeStyles(componentStyles);
+let SelectedTaskId = null;
 
 function Dashboard() {
   const classes = useStyles();
@@ -106,6 +107,39 @@ function Dashboard() {
     setEditModalVisibility(false);
   };
 
+  const SelectionForEdit = (id) => {
+    SelectedTaskId = id;
+    setEditModalVisibility(true);
+  };
+  const CancelingSelectionForEdit = () => {
+    setEditModalVisibility(false);
+  };
+
+  const SelectionForDelete = (id) => {
+    SelectedTaskId = id;
+    setConfirmationModalVisibility(true);
+  };
+  const CancelingSelectionForDelete = async (DeleteFlag = false) => {
+    if (DeleteFlag) {
+      console.log("Initiating Delete Request ...");
+      await axios
+        .post("/task/delete", {
+          _id: SelectedTaskId,
+        })
+        .then(() => {
+          console.log("Success from database ...");
+          setrows(rows.filter((user) => user._id != SelectedTaskId));
+          SelectedTaskId = null;
+          console.log("Request Successfull");
+        })
+        .catch((e) => {
+          console.log("Failed from database ...");
+          console.log("Request Failed");
+        });
+    }
+    setConfirmationModalVisibility(false);
+  };
+
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
@@ -116,67 +150,56 @@ function Dashboard() {
   };
 
   const columns = [
-    // { field: "id", headerName: "ID", width: 250 },
     {
-      field: "LevelName",
-      headerName: "Level Name",
-      width: 170,
-      editable: false,
+      field: "actions",
+      headerName: "Actions",
+      width: 80,
+      disableClickEventBubbling: true,
+      renderCell: (params) => {
+        return (
+          <div>
+            {/* <Button
+              variant="contained"
+              style={{ padding: 7 }}
+              onClick={() => setEditModalVisibility(true)}
+            >
+              <EditIcon />
+            </Button>
+            &nbsp; &nbsp; */}
+            <Button
+              variant="contained"
+              style={{ padding: 7 }}
+              onClick={() => SelectionForDelete(params.formattedValue)}
+            >
+              <DeleteIcon />
+            </Button>
+          </div>
+        );
+      },
     },
+    { field: "id", headerName: "Task ID", width: 250 },
     {
-      field: "Level",
-      headerName: "Level",
-      width: 130,
-      editable: false,
-    },
-    {
-      field: "Type",
-      headerName: "Type",
-      width: 120,
-      editable: false,
-    },
-
-    {
-      field: "Designation",
-      headerName: "Designation",
-      width: 200,
-      editable: false,
-    },
-
-    {
-      field: "OffShorePerHr",
-      headerName: "OffShore Per Hr",
-      width: 150,
-      editable: false,
-    },
-
-    {
-      field: "OnSitePerHr",
-      headerName: "On Site Per Hr",
-      width: 150,
+      field: "TaskName",
+      headerName: "Task Name",
+      width: 600,
       editable: false,
     },
   ];
 
   const [rows, setrows] = useState([
     // {
-    //   id: 1,
-    //   LevelName: "Level 1-Trainee",
-    //   Level: "Level 1",
-    //   Type: "Base",
-    //   Designation: "Trainee",
-    //   OffShorePerHr: "9.75",
-    //   OnSitePerHr: "9.75",
+    //   id: "613fb28758c39e548e42a376",
+    //   ProjectName: "Project X",
     // },
   ]);
 
   useEffect(() => {
     (async () => {
       try {
-        console.log("Requesting Levels List ...");
-        let Response = await axios.get("/get/levels");
+        console.log("Requesting WBS List ...");
+        let Response = await axios.get("/get/tasks");
         Response.data = Response.data.map((list) => {
-          return { ...list, id: list._id };
+          return { ...list, id: list._id, actions: list._id };
         });
         console.log("Response Recieved", Response.data);
         setrows(Response.data);
@@ -259,21 +282,24 @@ function Dashboard() {
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
-            {"Confirm Deleting the Level?"}
+            {"Confirm Deleting the Project?"}
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              By Confirming, the level will be permanently deleted and you'll
+              By Confirming, the project will be permanently deleted and you'll
               not be able to restore it.
               <br />
-              Note: It may effect the users that are assigned the same level.
+              Note: It may effect other entities that it is associated with.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus onClick={handleClose}>
+            <Button
+              autoFocus
+              onClick={() => CancelingSelectionForDelete(false)}
+            >
               No, Don't Delete!
             </Button>
-            <Button onClick={handleClose} autoFocus>
+            <Button onClick={() => CancelingSelectionForDelete(true)} autoFocus>
               Confrim
             </Button>
           </DialogActions>
@@ -294,13 +320,12 @@ function Dashboard() {
               <CardHeader
                 title={
                   <Box component="span" color={theme.palette.gray[600]}>
-                    {/* <a href={window.location.origin + "/#/admin/wbs_codes"}>
-                      + Add New Level
-                    </a> */}
-                    List of Levels
+                    <a href={window.location.origin + "/#/admin/task/add"}>
+                      + Add New Task
+                    </a>
                   </Box>
                 }
-                subheader="Levels"
+                subheader="Tasks"
                 classes={{ root: classes.cardHeaderRoot }}
                 titleTypographyProps={{
                   component: Box,

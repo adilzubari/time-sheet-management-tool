@@ -113,6 +113,7 @@ let SelectedUserID = null,
   Role = "",
   Level = "",
   level = null,
+  tasks = null,
   workflow = null,
   project = null;
 
@@ -383,6 +384,11 @@ function Dashboard() {
   useEffect(() => {
     (async () => {
       try {
+        console.log("Requesting Tasks ...");
+        const Tasks = await axios.get("/get/tasks");
+        tasks = Tasks.data;
+        console.log("tasks recieved and saved!", Tasks.data);
+
         console.log("Requesting levels ...");
         const _Response = await axios.get("/get/levels");
         // await setlevel(_Response.data);
@@ -672,7 +678,26 @@ function Dashboard() {
                 }}
               >
                 <MenuItem value={"null"}>Select Task Type</MenuItem>
+                {tasks != null &&
+                  (() => {
+                    const code = [];
+                    for (let index = 0; index < tasks.length; index++) {
+                      code.push(
+                        <MenuItem value={tasks[index].TaskName}>
+                          {tasks[index].TaskName}
+                        </MenuItem>
+                      );
+                    }
+                    console.log("code", code);
+                    return code;
+                  })()}
+                {/* <MenuItem value={"Analysis"}>Analysis</MenuItem>
+                <MenuItem value={"Design"}>Design</MenuItem>
+                <MenuItem value={"Build"}>Build</MenuItem>
                 <MenuItem value={"Testing"}>Testing</MenuItem>
+                <MenuItem value={"Trainning"}>Trainning</MenuItem>
+                <MenuItem value={"Support"}>Support</MenuItem>
+                <MenuItem value={"Production"}>Production</MenuItem> */}
               </Select>
 
               <DateRangePicker

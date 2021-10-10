@@ -116,7 +116,7 @@ function Dashboard() {
   };
 
   const columns = [
-    { field: "id", headerName: "WBS Code", width: 250 },
+    { field: "id", headerName: "Project Id", width: 250 },
     {
       field: "ProjectName",
       headerName: "Project Name",
@@ -256,12 +256,10 @@ function Dashboard() {
               <CardHeader
                 title={
                   <Box component="span" color={theme.palette.gray[600]}>
-                    <a href={window.location.origin + "/#/admin/wbs_codes"}>
-                      + Add New WBS Code
-                    </a>
+                    List of Projects
                   </Box>
                 }
-                subheader="Work Breakdown Structure Codes (WBS Codes)"
+                subheader="Projects"
                 classes={{ root: classes.cardHeaderRoot }}
                 titleTypographyProps={{
                   component: Box,
@@ -280,13 +278,14 @@ function Dashboard() {
                 }}
               ></CardHeader>
               <CardContent>
-                <Box position="relative" height="600px">
-                  <div style={{ height: 600, width: "100%" }}>
+                <Box position="relative">
+                  <div style={{ width: "100%" }}>
                     <DataGrid
                       rows={rows}
                       columns={columns}
-                      pageSize={5}
-                      rowsPerPageOptions={[5]}
+                      // pageSize={5}
+                      // rowsPerPageOptions={[5]}
+                      autoHeight
                       checkboxSelection={false}
                       disableSelectionOnClick
                     />

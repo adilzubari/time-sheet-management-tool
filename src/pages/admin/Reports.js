@@ -334,6 +334,7 @@ function Dashboard() {
         Employee_id: id,
       });
       console.log("Response Recieved", Response.data);
+      GrandTotal = 0;
       Response.data = Response.data
         .filter((item) =>
           isWithinInterval(new Date(Today), {
@@ -342,7 +343,7 @@ function Dashboard() {
           })
         )
         .map((item) => {
-          //   GrandTotal += CalSumInArray(item._id);
+          GrandTotal += CalSumInArray(item._id);
           return {
             ...item,
             id: item._id,
@@ -353,7 +354,9 @@ function Dashboard() {
             ProjectName:
               " • " +
               Projects.data.filter((proj) => proj._id == item.Project_id)[0]
-                .ProjectName,
+                .ProjectName +
+              " - " +
+              item.TaskType,
             ...Progress.data.filter((prog) => prog.Workflow_id == item._id)[0]
               .Progress,
             Total: CalSumInArray(item._id),
@@ -386,7 +389,7 @@ function Dashboard() {
           id: "kjasdhaslkh",
           ProjectName: "Total",
           ...zz,
-          //   Total: GrandTotal,
+          Total: GrandTotal,
         },
       ];
       console.log("Response Filtered", Response.data);

@@ -37,7 +37,7 @@ import {
   // chartExample1,
   // chartExample2,
 } from "variables/charts.js";
-import EditIcon from "@material-ui/icons/Edit";
+// import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 
 import componentStyles from "assets/theme/views/admin/dashboard.js";
@@ -153,19 +153,19 @@ function Dashboard() {
     {
       field: "actions",
       headerName: "Actions",
-      width: 200,
+      width: 80,
       disableClickEventBubbling: true,
       renderCell: (params) => {
         return (
           <div>
-            <Button
+            {/* <Button
               variant="contained"
               style={{ padding: 7 }}
               onClick={() => setEditModalVisibility(true)}
             >
               <EditIcon />
             </Button>
-            &nbsp; &nbsp;
+            &nbsp; &nbsp; */}
             <Button
               variant="contained"
               style={{ padding: 7 }}
@@ -344,13 +344,14 @@ function Dashboard() {
                 }}
               ></CardHeader>
               <CardContent>
-                <Box position="relative" height="600px">
-                  <div style={{ height: 600, width: "100%" }}>
+                <Box position="relative">
+                  <div style={{ width: "100%" }}>
                     <DataGrid
                       rows={rows}
                       columns={columns}
-                      pageSize={5}
-                      rowsPerPageOptions={[5]}
+                      // pageSize={5}
+                      // rowsPerPageOptions={[5]}
+                      autoHeight
                       checkboxSelection={false}
                       disableSelectionOnClick
                     />

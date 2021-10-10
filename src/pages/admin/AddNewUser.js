@@ -78,6 +78,7 @@ function AddNewUser() {
   const [Contact, setContact] = useState("");
   const [Password, setPassword] = useState("");
   const [Level, setLevel] = useState("");
+  const [Site, setSite] = useState("onsite");
   const [Role, setRole] = useState("employee");
 
   const [Submit, setSubmit] = useState(false);
@@ -90,8 +91,10 @@ function AddNewUser() {
       Contact,
       Password,
       Role,
-      Level
+      Level,
+      Site
     );
+    // return;
     setSubmit(true);
     try {
       console.log("Initiating Request");
@@ -102,6 +105,7 @@ function AddNewUser() {
         Password,
         Role,
         Level,
+        Site,
       });
       console.log("Response", Response.data);
       console.log("Request Successfull!");
@@ -215,8 +219,6 @@ function AddNewUser() {
                     }}
                   />
 
-                  {/* <FormControl fullWidth> */}
-                  {/* <InputLabel id="demo-simple-select-label">Age</InputLabel> */}
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
@@ -245,11 +247,24 @@ function AddNewUser() {
                         console.log("code", code);
                         return code;
                       })()}
-                    {/* <MenuItem value={"10"}>Ten</MenuItem>
-                    <MenuItem value={"20"}>Twenty</MenuItem>
-                    <MenuItem value={"30"}>Thirty</MenuItem> */}
                   </Select>
-                  {/* </FormControl> */}
+
+                  <Select
+                    value={Site}
+                    label="Site"
+                    variant={"outlined"}
+                    onChange={(e) => setSite(e.target.value)}
+                    style={{
+                      borderColor: "white",
+                      backgroundColor: "white",
+                      color: "black",
+                      width: "100%",
+                      marginBottom: 20,
+                    }}
+                  >
+                    <MenuItem value={"onsite"}>On Site</MenuItem>
+                    <MenuItem value={"offshore"}>OffShore</MenuItem>
+                  </Select>
 
                   <FormControl component="fieldset">
                     <FormLabel component="legend">Role</FormLabel>

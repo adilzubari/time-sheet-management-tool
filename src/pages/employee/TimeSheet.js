@@ -413,6 +413,7 @@ function Dashboard() {
           Employee_id: UserProfile._id,
         });
         console.log("Response Recieved", Response.data);
+        GrandTotal = 0;
         Response.data = Response.data
           .filter((item) =>
             isWithinInterval(new Date(Today), {
@@ -432,17 +433,34 @@ function Dashboard() {
               ProjectName:
                 " • " +
                 Projects.data.filter((proj) => proj._id == item.Project_id)[0]
-                  .ProjectName,
+                  .ProjectName +
+                " - " +
+                item.TaskType,
               ...Progress.data.filter((prog) => prog.Workflow_id == item._id)[0]
                 .Progress,
               Total: CalSumInArray(item._id),
             };
           });
         let zz = {};
+        // Object.keys(DaysInTheWeek).forEach((key, index) => {
+        //   let col_sum = 0;
+        //   Progress.data.forEach((work) => {
+        //     SelectedWorkflowId = work.Workflow_id;
+        //     col_sum += RespectedCorresspondedExists(index)
+        //       ? GetValueOfRespectedInput(index) * 1
+        //       : 0;
+        //   });
+        //   zz[DaysInTheWeek[key]] = col_sum;
+        // });
         Object.keys(DaysInTheWeek).forEach((key, index) => {
           let col_sum = 0;
           Progress.data.forEach((work) => {
             SelectedWorkflowId = work.Workflow_id;
+            if (
+              Response.data.filter((item) => item._id == work.Workflow_id)
+                .length == 0
+            )
+              return;
             col_sum += RespectedCorresspondedExists(index)
               ? GetValueOfRespectedInput(index) * 1
               : 0;
