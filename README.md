@@ -1,31 +1,15 @@
-# [Time Sheet Management Tool](https://demos.creative-tim.com/argon-dashboard-material-ui?ref=admui-github-readme)
+# [Time Sheet Management Tool](https://pmprocess.in/)
 
 
 ![Product Image](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-material-ui/argon-dashboard-material-ui.jpg)
 
-Start your development with a Dashboard for [React](https://reactjs.org/?ref=creativetim), [React Hooks](https://reactjs.org/docs/hooks-intro.html?ref=creativetim), [Create React App](https://create-react-app.dev/docs/getting-started/?ref=creativetim), and [Material-UI](https://material-ui.com/?ref=creativetim). It is open-source, free and it features many components that can help you create amazing websites.
+**Manage your Employees**
 
-**Fully Coded Components**
-
-Argon Dashboard Material-UI is built with over 100 individual components, giving you the freedom of choosing and combining. All components can take variations in color, that you can easily modify using JSS files.
-You will save a lot of time going from prototyping to full-functional code, because all elements are implemented. This Dashboard is coming with pre-built examples, so the development process is seamless, switching from our pages to the real website is very easy to be done.
-Every element has multiple states for colors, styles, hover, focus, that you can easily access and use.
-
-**Complex Documentation**
-
-Each element is well presented in a very complex documentation. You can read more about the idea behind this [dashboard here](https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=creativetim). You can check the [components here](https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=creativetim) and the [foundation here](https://www.creative-tim.com/learning-lab/material-ui/colors/argon-dashboard?ref=creativetim).
-
-**Example Pages**
-
-If you want to get inspiration or just show something directly to your clients, you can jump start your development with our pre-built example pages. You will be able to quickly set up the basic structure for your web project.
-
+Time Sheet management tool is designed and developed to manage the employees workflow and also takes the clear view of hours consumed by employees on projects.
 
 ## Table of Contents
 
-* [Versions](#versions)
 * [Demo](#demo)
-* [Quick Start](#quick-start)
-* [Documentation](#documentation)
 * [File Structure](#file-structure)
 * [Browser Support](#browser-support)
 * [Resources](#resources)
@@ -36,44 +20,10 @@ If you want to get inspiration or just show something directly to your clients, 
 * [Useful Links](#useful-links)
 
 
-## Versions
-
-
-[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/material-ui.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-material-ui?ref=admui-github-readme)[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/aspnet-logo.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-asp-net?ref=admui-github-readme)[<img src="https://github.com/creativetimofficial/public-assets/blob/master/logos/nodejs-logo.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-nodejs?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/react-logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-react?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/angular-logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-angular?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/react-native-logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-react-native?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/vue-logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/vue-argon-dashboard?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/laravel_logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-laravel?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/bootstrap-logo.png?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/bootstrap-vue-logo.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/bootstrap-vue-argon-dashboard?ref=admui-github-readme)[<img style="background:white" src="https://github.com/creativetimofficial/public-assets/blob/master/logos/icon-django.jpg?raw=true" width="60" height="60" />](https://www.creative-tim.com/product/argon-dashboard-django?ref=admui-github-readme)
-
-
-
-| Material-UI | NextJS | ASP.NET | NodeJS | React  | Angular  |
-| --- | --- | --- | --- | --- | --- |
-| [![Argon Dashboard Material-ui](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-material-ui/argon-dashboard-material-ui.jpg)](https://www.creative-tim.com/product/argon-dashboard-material-ui) | [![Argon Dashboard Asp.net](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/nextjs-argon-dashboard/nextjs-argon-dashboard.jpg)](https://www.creative-tim.com/product/nextjs-argon-dashboard) | [![Argon Dashboard Asp.net](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-aspnet/argon-dashboard-aspnet.jpg)](https://www.creative-tim.com/product/argon-dashboard-asp-net) | [![Argon Dashboard Nodejs](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-nodejs/argon-dashboard-nodejs.jpg)](https://www.creative-tim.com/product/argon-dashboard-nodejs) | [![Argon Dashboard React](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-react/argon-dashboard-react.jpg)](https://www.creative-tim.com/product/argon-dashboard-react) | [![Argon Dashboard Angular](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-angular/argon-dashboard-angular.jpg)](https://www.creative-tim.com/product/argon-dashboard-angular) |
-
-| React Native | VueJS | Laravel | Bootstrap  | BootstrapVue  | Django  |
-| --- | --- | --- | --- | --- | --- |
-| [![Argon React Native](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-react-native/arg-rn-thumbnail.jpg)](https://www.creative-tim.com/product/argon-react-native) | [![Vue Argon Dashboard](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/vue-argon-dashboard/vue-argon-dashboard.jpg)](https://www.creative-tim.com/product/vue-argon-dashboard) | [![Argon Dashboard Laravel](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-laravel/argon-dashboard-laravel.jpg)](https://www.creative-tim.com/product/argon-dashboard-laravel) | [![Argon Dashboard](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard/argon-dashboard.jpg)](https://www.creative-tim.com/product/argon-dashboard) | [![BootstrapVue Argon Dashboard](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/bootstrap-vue-argon-dashboard/bootstrap-vue-argon-dashboard.jpg)](https://www.creative-tim.com/product/bootstrap-vue-argon-dashboard) | [![Argon Dashboard Django](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-django/argon-dashboard-django.jpg)](https://www.creative-tim.com/product/argon-dashboard-django) |
-
-
 ## Demo
 
-- [Start page](https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/dashboard?ref=admui-github-readme)
-- [User profile page](https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/profile?ref=admui-github-readme)
-- [Tables page ](https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/tables?ref=admui-github-readme)
-- [Maps Page](https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/maps)
-- [Login page](https://demos.creative-tim.com/argon-dashboard-material-ui/#/auth/login?ref=admui-github-readme)
-
-[View More](https://demos.creative-tim.com/argon-dashboard-material-ui/#/admin/dashboard?ref=admui-github-readme).
-
-
-## Quick start
-
-- `npm i argon-dashboard-material-ui`
-- [Download from Github](https://github.com/creativetimofficial/argon-dashboard-material-ui/archive/main.zip).
-- [Download from Creative Tim](https://www.creative-tim.com/product/argon-dashboard-material-ui?ref=admui-github-readme).
-- Clone the repo: `git clone https://github.com/creativetimofficial/argon-dashboard-material-ui.git`.
-
-
-## Documentation
-The documentation for the Material Kit is hosted at our [website](https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard).
-
+- [Start page](https://swift-300620.web.app/)
+- [Login page](https://swift-300620.web.app/#/login)
 
 ## File Structure
 Within the download you'll find the following directories and files:
